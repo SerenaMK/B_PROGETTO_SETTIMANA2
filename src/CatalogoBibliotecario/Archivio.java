@@ -78,7 +78,7 @@ public class Archivio {
 	
 	// Rimozione di un elemento dato un codice ISBN
 	public static void removeElement(String isbn) {
-		archivio.removeIf(e -> e.getISBN().equals(isbn)); 
+		archivio.removeIf(e -> e.getISBN().equals(isbn));
 		System.out.println("\n> La pubblicazione con codice ISBN " + isbn + " è stata rimossa dall'archivio.");
 	}
 	
@@ -86,14 +86,18 @@ public class Archivio {
 	public static void searchByISBN(String isbn) {
 		System.out.println("\n> RICERCA PER ISBN");
 		System.out.println("Il titolo della pubblicazione con codice ISBN " + isbn + " è:");
-		archivio.stream().filter(e -> e.getISBN().equals(isbn)).forEach(e -> System.out.println("\"" + e.getTitolo() + "\""));
+		archivio.stream()
+				.filter(e -> e.getISBN().equals(isbn))
+				.forEach(e -> System.out.println("\"" + e.getTitolo() + "\""));
 	}
 	
 	// Ricerca per anno pubblicazione
 	public static void searchByYear(int anno) {
 		System.out.println("\n> RICERCA PER ANNO DI PUBBLICAZIONE");
 		System.out.println("I titoli pubblicati nell'anno " + anno + " sono:");
-		archivio.stream().filter(e -> e.getAnno() == (anno)).forEach(e -> System.out.println("\"" + e.getTitolo() + "\""));
+		archivio.stream()
+				.filter(e -> e.getAnno() == (anno))
+				.forEach(e -> System.out.println("\"" + e.getTitolo() + "\""));
 	}
 	
 	// Ricerca per autore
@@ -102,7 +106,8 @@ public class Archivio {
 		System.out.println("I libri scritti da " + autore + " sono:");
 		archivio.stream()
 				.filter(e -> e instanceof Libri)
-				.filter(e -> ((Libri) e).getAutore() == (autore)).forEach(e -> System.out.println("\"" + e.getTitolo() + "\""));
+				.filter(e -> ((Libri) e).getAutore() == (autore))
+				.forEach(e -> System.out.println("\"" + e.getTitolo() + "\""));
 	}
 	
 	// Salvataggio su disco dell'archivio
