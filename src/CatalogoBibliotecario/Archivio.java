@@ -17,55 +17,69 @@ public class Archivio {
 	static File file = new File("dirFile/archivio.txt");
 
 	public static void main(String[] args) {
-		// PER L'ESERCIZIO, USARE JAVA STREAMS E LAMBDA EXPRESSIONS
 		
+		// Aggiungo libri e riviste
 		addElement("978-1-78663-729-1", "Full Surrogacy Now: Feminism Against Family", 2019, 200, "Sophie Lewis", "Politica");
 		addElement("978-0-425-27399-7", "Captive Prince", 2017, 140, "C. S. Pacat", "Fantasy");
 		addElement("978-0-425-27399-8", "Prince's Gambit", 2018, 145, "C. S. Pacat", "Fantasy");
 		addElement("978-0-425-27399-9", "Kings Rising", 2019, 150, "C. S. Pacat", "Fantasy");
+		addElement("978-1-420-69420-6", "Libro a caso da rimuovere", 2020, 50, "Tizio Caio", "Thriller");
 		addElement("978-3-16-148410-0", "Il Manifesto", 2022, 20, Periodicita.MENSILE);
 		
-		//System.out.println(archivio);
+		// Stampa l'archivio
+		getArchivio();
 		
-//		removeElement("978-3-16-148410-0");
-//		
-//		System.out.println(archivio);
-//		
-//		searchByISBN("978-1-78663-729-1");
-//		searchByYear(2019);
-//		searchByAuthor("C. S. Pacat");
-//		
+		// Rimuovi un libro
+		removeElement("978-1-420-69420-6");
+		
+		// Stampa di nuovo l'archivio aggiornato
+		getArchivio();
+		
+		// Ricerca per ISBN, anno e autore
+		searchByISBN("978-1-78663-729-1");
+		searchByYear(2019);
+		searchByAuthor("C. S. Pacat");
+		
+		// Salva l'archivio su file
 		try {
 			save();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
+		// Carica l'archivio da file
 		try {
 			load();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		// System.out.println(archivio.toString());
 
+	}
+	
+	// Stampa l'archivio
+	public static void getArchivio() {
+		System.out.println("\n-------ARCHIVIO--------");
+		System.out.println(archivio);
+		System.out.println("-----------------------");
 	}
 	
 	// Aggiunta di un elemento
 	public static void addElement(String isbn, String titolo, int anno, int pagine, String autore, String genere) {
 		Libri l = new Libri(isbn, titolo, anno, pagine, autore, genere);
 		archivio.add(l);
+		System.out.println("\n> Il libro " + titolo + " è stato aggiunto all'archivio.");
 	}
 	
 	public static void addElement(String isbn, String titolo, int anno, int pagine, Periodicita periodicita) {
 		Riviste r = new Riviste(isbn, titolo, anno, pagine, periodicita);
 		archivio.add(r);
+		System.out.println("\n> La rivista " + titolo + " è stata aggiunta all'archivio.");
 	}
 	
 	// Rimozione di un elemento dato un codice ISBN
 	public static void removeElement(String isbn) {
 		archivio.removeIf(e -> e.getISBN().equals(isbn)); 
+		System.out.println("\n> La pubblicazione con codice ISBN " + isbn + " è stata rimossa dall'archivio.");
 	}
 	
 	// Ricerca per ISBN
@@ -86,20 +100,22 @@ public class Archivio {
 	public static void searchByAuthor(String autore) {
 		System.out.println("\n> RICERCA PER AUTORE");
 		System.out.println("I libri scritti da " + autore + " sono:");
-		archivio.stream().filter(e -> ((Libri) e).getAutore() == (autore)).forEach(e -> System.out.println("\"" + e.getTitolo() + "\""));
+		archivio.stream()
+				.filter(e -> e instanceof Libri)
+				.filter(e -> ((Libri) e).getAutore() == (autore)).forEach(e -> System.out.println("\"" + e.getTitolo() + "\""));
 	}
 	
-	// salvataggio su disco dell'archivio
+	// Salvataggio su disco dell'archivio
 	public static void save() throws IOException {
 		System.out.println("\n> SALVATAGGIO ARCHIVIO SU FILE...");
 		FileUtils.writeLines(file, archivio);
-		System.out.println("> ARCHIVIO SALVATO");
+		System.out.println("Archivio salvato.");
 	}
 	
-	// caricamento dal disco dell'archivio
+	// Caricamento dal disco dell'archivio
 	public static void load() throws IOException {
-		System.out.println("\n> CARICA ARCHIVIO DA FILE");
-//		List<String> loaded = FileUtils.readLines(file, "UTF-8");
+		System.out.println("\n> CARICAMENTO ARCHIVIO DA FILE");
+		System.out.println("Archivio caricato:");
 		String loaded = FileUtils.readFileToString(file, "UTF-8");
 		System.out.println(loaded);
 	}
