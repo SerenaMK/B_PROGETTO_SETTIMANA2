@@ -25,4 +25,11 @@ public class Libri extends Pubblicazioni {
 				"\nAutore: " + getISBN() +
 				"\nGenere: " + getGenere() + "\n");
 	}
+	
+	@Override
+	public String toSave() {
+		return ( super.toSave() + "@" +
+				getAutore() + "@" +
+				getGenere());
+	}
 }

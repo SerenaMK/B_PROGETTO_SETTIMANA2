@@ -38,4 +38,11 @@ public abstract class Pubblicazioni {
 				"\nAnno: " + getAnno() +
 				"\nPagine : " + getPagine());
 	}
+	
+	public String toSave() {
+		return (getISBN() + "@" +
+				getTitolo() + "@" +
+				getAnno() + "@" +
+				getPagine());
+	}
 }

@@ -113,7 +113,13 @@ public class Archivio {
 	// Salvataggio su disco dell'archivio
 	public static void save() throws IOException {
 		System.out.println("\n> SALVATAGGIO ARCHIVIO SU FILE...");
-		FileUtils.writeLines(file, archivio);
+		
+		String prova = "";
+		for (Pubblicazioni p : archivio) {
+			prova += (p.toSave() + "#");
+		}
+		
+		FileUtils.writeStringToFile(file, prova, "UTF-8");
 		System.out.println("Archivio salvato.");
 	}
 	
@@ -121,8 +127,35 @@ public class Archivio {
 	public static void load() throws IOException {
 		System.out.println("\n> CARICAMENTO ARCHIVIO DA FILE");
 		System.out.println("Archivio caricato:");
+		
 		String loaded = FileUtils.readFileToString(file, "UTF-8");
-		System.out.println(loaded);
+		String loadedWithoutLast = loaded.substring(0, loaded.length()-1);
+		String[] loadedSplittato = loadedWithoutLast.split("#");
+		
+		archivio.clear();
+		
+		for (String parametro : loadedSplittato) {
+			String[] parti = parametro.split("@");
+			
+			String isbn = parti[0];
+			String titolo = parti[1];
+			int anno = Integer.parseInt(parti[2]);
+			int pagine = Integer.parseInt(parti[3]);
+			
+			if (parti.length == 6) {
+				String autore = parti[4];
+				String genere = parti[5];
+				Libri l = new Libri(isbn, titolo, anno, pagine, autore, genere);
+				archivio.add(l);
+			} else {
+				String p = parti[4];
+				Periodicita periodicita = Periodicita.valueOf(p);
+				Riviste r = new Riviste(isbn, titolo, anno, pagine, periodicita);
+				archivio.add(r);
+			}
+		}
+		
+		getArchivio();
 	}
 
 }

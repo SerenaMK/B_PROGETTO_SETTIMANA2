@@ -18,4 +18,10 @@ public class Riviste extends Pubblicazioni {
 		return ( super.toString() +
 				"\nPeriodicità: " + getPeriodicita() + "\n");
 	}
+	
+	@Override
+	public String toSave() {
+		return ( super.toSave() + "@" +
+				getPeriodicita());
+	}
 }
