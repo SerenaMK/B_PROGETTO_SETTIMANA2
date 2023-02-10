@@ -114,12 +114,12 @@ public class Archivio {
 	public static void save() throws IOException {
 		System.out.println("\n> SALVATAGGIO ARCHIVIO SU FILE...");
 		
-		String prova = "";
+		String daSalvare = "";
 		for (Pubblicazioni p : archivio) {
-			prova += (p.toSave() + "#");
+			daSalvare += (p.toSave() + "#");
 		}
 		
-		FileUtils.writeStringToFile(file, prova, "UTF-8");
+		FileUtils.writeStringToFile(file, daSalvare, "UTF-8");
 		System.out.println("Archivio salvato.");
 	}
 	
@@ -154,8 +154,9 @@ public class Archivio {
 				archivio.add(r);
 			}
 		}
-		
+
 		getArchivio();
+		
 	}
 
 }
